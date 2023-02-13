@@ -18,8 +18,10 @@ namespace CRUDBackend.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                                                 .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Age = table.Column<string>(type: "text", nullable: true),
-                    isActive = table.Column<int>(type: "integer", nullable: false)
+                    Time = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: true),
+                    Sms = table.Column<string>(type: "text", nullable: true),
+                    isActive = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -29,14 +29,20 @@ namespace CRUDBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Age")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("isActive")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Sms")
+                        .HasColumnType("text");
+
+                    b.Property<string>("isActive")
+                        .HasColumnType("text");
 
                     b.HasKey("ID");
 
