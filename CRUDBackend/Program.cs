@@ -31,7 +31,6 @@ app.UseCors(builder =>
 });
 
 
-
 app.UseAuthorization();
 
 app.MapControllers();
