@@ -36,7 +36,7 @@ const CRUD = () => {
     }, [])
 
     const getData = () => {
-        axios.get('http://localhost:5145/api/Employee')
+        axios.get('http://localhost:5145/api/User')
             .then((result) => {
                 setData(result.data)
             })
@@ -47,7 +47,7 @@ const CRUD = () => {
 
     const handleEdit = (id) => {
         handleShow();
-        axios.get(`http://localhost:5145/api/Employee/${id}`)
+        axios.get(`http://localhost:5145/api/User/${id}`)
             .then((result) => {
                 setEditName(result.data.name);
                 setEditTime(result.data.time)
@@ -62,10 +62,10 @@ const CRUD = () => {
 
     const handleDelete = (id) => {
         if (window.confirm("Подтвердите удаление") == true) {
-            axios.delete(`http://localhost:5145/api/Employee/${id}`)
+            axios.delete(`http://localhost:5145/api/User/${id}`)
                 .then((result) => {
                     if (result.status === 200) {
-                        toast.success('Employee has been deleted');
+                        toast.success('User has been deleted');
                         //обновляем базу данных
                         getData();
                     }
@@ -77,7 +77,7 @@ const CRUD = () => {
     }
 
     const handleUpdate = () => {
-        const url = `http://localhost:5145/api/Employee/${editID}`
+        const url = `http://localhost:5145/api/User/${editID}`
         const statuses = ["Доставлено", "Отправлено", "Ошибка отправки"];
         const randomIndex = Math.floor(Math.random() * statuses.length);
         const editIsActive = statuses[randomIndex];
@@ -101,7 +101,7 @@ const CRUD = () => {
                 handleClose();
                 getData();
                 clear();
-                toast.success('Employee has been updated');
+                toast.success('User has been updated');
             }).catch((error) => {
                 toast.error(error);
             })
@@ -109,7 +109,7 @@ const CRUD = () => {
 
 
     const handleSave = () => {
-        const url = 'http://localhost:5145/api/Employee';
+        const url = 'http://localhost:5145/api/User';
         const statuses = ["Доставлено", "Отправлено", "Ошибка отправки"];
         const randomIndex = Math.floor(Math.random() * statuses.length);
         const isActive = statuses[randomIndex];
@@ -131,7 +131,7 @@ const CRUD = () => {
             .then((result) => {
                 getData();
                 clear();
-                toast.success('Employee has been added');
+                toast.success('User has been added');
             }).catch((error) => {
                 toast.error(error);
             });
@@ -235,7 +235,7 @@ const CRUD = () => {
             </Table>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modify / Update Employee</Modal.Title>
+                    <Modal.Title>Modify / Update User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>

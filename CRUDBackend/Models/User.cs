@@ -1,7 +1,7 @@
 ﻿using System;
 namespace CRUDBackend.Models
 {
-    public class Employee
+    public class User
     {
         public int ID { get; set; }
         public DateTime Time {get; set;}

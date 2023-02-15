@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CRUDBackend.Migrations
 {
-    [DbContext(typeof(EmployeeContext))]
+    [DbContext(typeof(UserContext))]
     [Migration("20230212161740_initial")]
     partial class initial
     {
@@ -24,7 +24,7 @@ namespace CRUDBackend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CRUDBackend.Models.Employee", b =>
+            modelBuilder.Entity("CRUDBackend.Models.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace CRUDBackend.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

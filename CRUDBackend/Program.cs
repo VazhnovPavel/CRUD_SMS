@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddControllers();
 
 // Add services to the container.
-builder.Services.AddDbContext<EmployeeContext>(options
+builder.Services.AddDbContext<UserContext>(options
     => options.UseNpgsql(builder.Configuration.GetConnectionString("CRUDCS")));
 
 builder.Services.AddControllers();
