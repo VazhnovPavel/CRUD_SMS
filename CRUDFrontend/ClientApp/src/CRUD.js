@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -103,14 +103,14 @@ const CRUD = () => {
                 clear();
                 toast.success('User has been updated');
             }).catch((error) => {
-                toast.error(error);
-            })
+            toast.error(error);
+        })
     }
 
 
     const handleSave = () => {
         const url = 'http://localhost:5145/api/User';
-        const statuses = ["Доставлено", "Отправлено", "Ошибка отправки"];
+        const statuses = ["Доставлено", "Отправка...", "Ошибка отправки"];
         const randomIndex = Math.floor(Math.random() * statuses.length);
         const isActive = statuses[randomIndex];
         const time = new Date();
@@ -133,9 +133,15 @@ const CRUD = () => {
                 clear();
                 toast.success('User has been added');
             }).catch((error) => {
-                toast.error(error);
-            });
+            toast.error(error);
+        });
     };
+
+    
+
+
+
+
 
 
 
@@ -154,28 +160,26 @@ const CRUD = () => {
     }
 
 
-
-
     return (
         <Fragment>
-            <ToastContainer />
+            <ToastContainer/>
             <Container>
                 <br />
                 <br />
                 <Row>
                     <Col>
                         <input type="text" className="form-control" placeholder="Имя отправителя"
-                            value={name} onChange={(e) => setName(e.target.value)}
+                               value={name} onChange={(e) => setName(e.target.value)}
                         />
                     </Col>
                     <Col>
                         <input type="text" className="form-control" placeholder="Номер получателя"
-                            value={phone} onChange={(e) => setPhone(e.target.value)}
+                               value={phone} onChange={(e) => setPhone(e.target.value)}
                         />
                     </Col>
                     <Col>
                         <input type="text" className="form-control" placeholder="Текст СМС"
-                            value={sms} onChange={(e) => setSms(e.target.value)}
+                               value={sms} onChange={(e) => setSms(e.target.value)}
                         />
                     </Col>
 
@@ -189,46 +193,46 @@ const CRUD = () => {
 
             <Table striped bordered hover>
                 <thead>
-                    <br />
-                    <br />
-                    <tr>
-                        <th>#</th>
-                        <th>Время и дата отправки</th>
-                        <th>Номер получателя</th>
-                        <th>Текст СМС</th>
-                        <th>Статус</th>
-                        <th>Действия</th>
-                    </tr>
+                <br />
+                <br />
+                <tr>
+                    <th>#</th>
+                    <th>Время и дата отправки</th>
+                    <th>Номер получателя</th>
+                    <th>Текст СМС</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {
-                        data && data.length > 0 ?
-                            data.map((item, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <tr>{index + 1}</tr>
-                                        <td>{new Intl.DateTimeFormat('default', {
-                                            month: 'short',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric'
-                                        }).format(new Date(item.time))}</td>
+                {
+                    data && data.length > 0 ?
+                        data.map((item, index) => {
+                            return (
+                                <tr key={index}>
+                                    <tr>{index + 1}</tr>
+                                    <td>{new Intl.DateTimeFormat('default', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: 'numeric',
+                                        minute: 'numeric'
+                                    }).format(new Date(item.time))}</td>
 
-                                        <td>{item.phone}</td>
-                                        <td>{item.sms}</td>
-                                        <td>{item.isActive}</td>
-                                        <td colSpan={2}>
-                                            <button className="btn btn-primary" onClick={() => handleEdit(item.id)}>
-                                                Изменить</button> &nbsp;
+                                    <td>{item.phone}</td>
+                                    <td>{item.sms}</td>
+                                    <td>{item.isActive}</td>
+                                    <td colSpan={2}>
+                                        <button className="btn btn-primary" onClick={() => handleEdit(item.id)}>
+                                            Изменить</button> &nbsp;
                                         <button className="btn btn-danger" onClick={() => handleDelete(item.id)}>
-                                                Удалить</button>
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                            :
-                            'Loading...'
-                    }
+                                            Удалить</button>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                        :
+                        'Loading...'
+                }
 
 
                 </tbody>
@@ -241,17 +245,17 @@ const CRUD = () => {
                     <Row>
                         <Col>
                             <input type="text" className="form-control" placeholder="Имя отправителя"
-                                value={editName} onChange={(e) => setEditName(e.target.value)}
+                                   value={editName} onChange={(e) => setEditName(e.target.value)}
                             />
                         </Col>
                         <Col>
                             <input type="text" className="form-control" placeholder="Номер получателя"
-                                value={editPhone} onChange={(e) => setEditPhone(e.target.value)}
+                                   value={editPhone} onChange={(e) => setEditPhone(e.target.value)}
                             />
                         </Col>
                         <Col>
                             <input type="text" className="form-control" placeholder="Текст"
-                                value={editSms} onChange={(e) => setEditSms(e.target.value)}
+                                   value={editSms} onChange={(e) => setEditSms(e.target.value)}
                             />
                         </Col>
 
