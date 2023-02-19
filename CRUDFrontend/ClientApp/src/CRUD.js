@@ -65,7 +65,7 @@ const CRUD = () => {
             axios.delete(`http://localhost:5145/api/User/${id}`)
                 .then((result) => {
                     if (result.status === 200) {
-                        toast.success('User has been deleted');
+                        toast.success('Пользователь успешно удален');
                         //обновляем базу данных
                         getData();
                     }
@@ -95,13 +95,31 @@ const CRUD = () => {
             toast.error("Телефон и текст СМС не должны быть пустыми");
             return;
         }
+        if (name.length > 30) {
+            toast.error("Имя должно содержать не более 30 символов");
+            return;
+        }
+        if (phone.length > 25) {
+            toast.error("Телефон должен содержать не более 25 символов");
+            return;
+        }
+        if (sms.length > 70) {
+            toast.error("Одно смс должно содержать не более 70 символов");
+            return;
+        }
+        // Phone number validation check
+        const phoneRegex = /^[\d()+\s-]+$/;
+        if (!phoneRegex.test(editPhone)) {
+            toast.error("Телефон может содержать только цифры, пробелы, дефисы, скобки и знак плюса");
+            return;
+        }
         axios.put(url, data)
             .then((result) => {
                 //закрыть pop-up
                 handleClose();
                 getData();
                 clear();
-                toast.success('User has been updated');
+                toast.success('Информация обновлена');
             }).catch((error) => {
                 toast.error(error);
             })
@@ -109,49 +127,30 @@ const CRUD = () => {
 
     
 
-    //const handleSave = () => {
-    //    const url = 'http://localhost:5145/api/User';
-    //    const statuses = ["Доставлено", "Отправка...", "Ошибка отправки"];
-    //    const randomIndex = Math.floor(Math.random() * statuses.length);
-    //    const isActive = statuses[randomIndex];
-    //    const time = new Date();
-    //    const data = {
-    //        "name": name,
-    //        "time": time,
-    //        "phone": phone,
-    //        "sms": sms,
-    //        "isActive": isActive
-    //    };
-
-    //    if (!phone || !sms) {
-    //        toast.error("Телефон и текст СМС не должны быть пустыми");
-    //        return;
-    //    }
-
-    //    axios.post(url, data)
-    //        .then((result) => {
-    //            getData();
-    //            clear();
-    //            toast.success('User has been added');
-    //        }).catch((error) => {
-    //            toast.error(error);
-    //        });
-    //};
 
     const handleSave = () => {
         const url = 'http://localhost:5145/api/User';
-        const statuses = ["Доставлено", "Отправка...", "Ошибка отправки"];
-        const randomIndex = Math.floor(Math.random() * statuses.length);
-        const isActive = statuses[randomIndex];
+        const isActive = "Отправка..."
         const time = new Date();
-
-       
-
 
         if (!phone || !sms) {
             toast.error("Номер телефона и текст смс не должны быть пустыми");
             return;
         }
+
+        if (name.length > 30) {
+            toast.error("Имя должно содержать не более 30 символов");
+            return;
+        }
+        if (phone.length > 25) {
+            toast.error("Телефон должен содержать не более 25 символов");
+            return;
+        }
+        if (sms.length > 70) {
+            toast.error("Одно смс должно содержать не более 70 символов");
+            return;
+        }
+
         // Phone number validation check
         const phoneRegex = /^[\d()+\s-]+$/;
         if (!phoneRegex.test(phone)) {
@@ -168,20 +167,61 @@ const CRUD = () => {
             "isActive": isActive
         };
 
-       
+
 
         axios.post(url, data)
             .then((result) => {
                 getData();
                 clear();
-                toast.success('User has been added');
+                toast.success('Отправка смс...');
             }).catch((error) => {
                 toast.error(error);
             });
     };
 
-  
-    
+
+   
+
+   
+
+    const handleUpdateStatus = (id, name, phone, sms, isActive) => {
+        let editIsActive;
+
+        if (isActive === "Доставлено") {
+            editIsActive = isActive;
+        } else {
+            const statuses = ["Доставлено", "Ошибка отправки"];
+            const randomIndex = Math.floor(Math.random() * statuses.length);
+            editIsActive = statuses[randomIndex];
+        }
+
+        const url = `http://localhost:5145/api/User/${id}`;
+        const editTime = new Date();
+        const data = {
+            "id": id,
+            "isActive": editIsActive,
+            "time": editTime,
+            "name": name,
+            "phone": phone,
+            "sms": sms
+        };
+        
+            axios.put(url, data)
+                .then((result) => {
+                    getData();
+                    if (editIsActive === "Доставлено")
+                        toast.success('Статус обновлен');
+                    else
+                        toast.error('Смс не дошла, попробуйте обновить еще раз');
+                   
+                })
+                .catch((error) => {
+                    toast.error(error);
+                });
+        
+       
+
+    };
 
 
 
@@ -236,10 +276,8 @@ const CRUD = () => {
                     <br />
                     <br />
                     <tr>
-                        
-                        <th style={{ textAlign: 'center' }}>#</th>
-
-                        <th>Вемя и дата отправки</th>
+                        <th>#</th>
+                        <th>Время и дата отправки</th>
                         <th>Номер получателя</th>
                         <th>Текст СМС</th>
                         <th>Статус</th>
@@ -262,13 +300,22 @@ const CRUD = () => {
 
                                         <td>{item.phone}</td>
                                         <td>{item.sms}</td>
-                                        <td>{item.isActive}</td>
-                                        <td colSpan={2}>
-                                            <button className="btn btn-primary" onClick={() => handleEdit(item.id)}>
-                                                Изменить</button> &nbsp;
-                                        <button className="btn btn-danger" onClick={() => handleDelete(item.id)}>
-                                                Удалить</button>
+                                        <td>{item.isActive} &nbsp;
+                                            <button className="btn btn-info" onClick={() => handleUpdateStatus(item.id, item.name, item.phone, item.sms, item.isActive)}>
+                                                Обновить
+                                             </button> &nbsp;
                                         </td>
+                                        <td>
+                                            
+                                       
+                                            <button className="btn btn-primary" onClick={() => handleEdit(item.id)}>
+                                                Изменить
+                                            </button> &nbsp;
+                                            <button className="btn btn-danger" onClick={() => handleDelete(item.id)}>
+                                                Удалить
+                                            </button>
+                                        </td>
+
                                     </tr>
                                 )
                             })
@@ -309,7 +356,7 @@ const CRUD = () => {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={handleUpdate}>
-                        Сохранить изменения
+                        Отправить еще раз
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -317,6 +364,5 @@ const CRUD = () => {
     )
 
 }
-
 
 export default CRUD;
